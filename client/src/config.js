@@ -1,6 +1,29 @@
 // Smart contract configuration
 export const TODOLIST_CONTRACT_ADDRESS = '0x5c25BA0202e8581f551e23d5aD13E745E557C644';
-// TodoList contract ABI
+
+// Network explorer URLs for transaction and address viewing
+export const NETWORK_EXPLORERS = {
+  1: { // Ethereum Mainnet
+    name: 'Etherscan',
+    url: 'https://etherscan.io',
+    tx: (hash) => `https://etherscan.io/tx/${hash}`,
+    address: (addr) => `https://etherscan.io/address/${addr}`
+  },
+  11155111: { // Sepolia Testnet
+    name: 'Sepolia Etherscan',
+    url: 'https://sepolia.etherscan.io',
+    tx: (hash) => `https://sepolia.etherscan.io/tx/${hash}`,
+    address: (addr) => `https://sepolia.etherscan.io/address/${addr}`
+  },
+  31337: { // Hardhat Local
+    name: 'Local Network',
+    url: null,
+    tx: (hash) => null,
+    address: (addr) => null
+  }
+};
+
+// TodoList contract ABI (Updated with ownership features)
 export const TODOLIST_ABI = [
   {
     anonymous: false,
@@ -42,6 +65,18 @@ export const TODOLIST_ABI = [
         name: 'description',
         type: 'string',
       },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'dueDate',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
     ],
     name: 'TaskCreated',
     type: 'event',
@@ -70,6 +105,11 @@ export const TODOLIST_ABI = [
         internalType: 'string',
         name: '_description',
         type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: '_dueDate',
+        type: 'uint256',
       },
     ],
     name: 'createTask',
@@ -116,6 +156,61 @@ export const TODOLIST_ABI = [
             name: 'completed',
             type: 'bool',
           },
+          {
+            internalType: 'uint256',
+            name: 'dueDate',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'owner',
+            type: 'address',
+          },
+        ],
+        internalType: 'struct TodoList.Task[]',
+        name: '',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getMyTasks',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'string',
+            name: 'title',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string',
+          },
+          {
+            internalType: 'bool',
+            name: 'completed',
+            type: 'bool',
+          },
+          {
+            internalType: 'uint256',
+            name: 'dueDate',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'owner',
+            type: 'address',
+          },
         ],
         internalType: 'struct TodoList.Task[]',
         name: '',
@@ -155,6 +250,67 @@ export const TODOLIST_ABI = [
         name: '',
         type: 'bool',
       },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
+    ],
+    name: 'getUserTasks',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'string',
+            name: 'title',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string',
+          },
+          {
+            internalType: 'bool',
+            name: 'completed',
+            type: 'bool',
+          },
+          {
+            internalType: 'uint256',
+            name: 'dueDate',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'owner',
+            type: 'address',
+          },
+        ],
+        internalType: 'struct TodoList.Task[]',
+        name: '',
+        type: 'tuple[]',
+      },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -188,6 +344,16 @@ export const TODOLIST_ABI = [
         internalType: 'bool',
         name: 'completed',
         type: 'bool',
+      },
+      {
+        internalType: 'uint256',
+        name: 'dueDate',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
       },
     ],
     stateMutability: 'view',
